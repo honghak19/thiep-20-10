@@ -1,0 +1,2329 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#51233f">
+  <title>Thiệp 20/10 - Món quà yêu thương</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Noto+Serif:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --rose: #a74e73;
+      --wine: #6d3156;
+      --ink: #75485e;
+      --paper: #fff8f3;
+      --gold: #c89e70;
+      --sans: "Be Vietnam Pro", Arial, sans-serif;
+      --serif: "Noto Serif", Georgia, serif;
+    }
+
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      min-height: 100dvh;
+      background:
+        radial-gradient(circle at 14% 14%, #975778 0, transparent 36%),
+        radial-gradient(circle at 86% 80%, #763654 0, transparent 39%),
+        linear-gradient(135deg, #47213e, #66304f 56%, #421e39);
+      color: var(--ink);
+      font-family: var(--sans);
+      overflow-x: hidden;
+    }
+
+    button, input, textarea { font: inherit; }
+    button { cursor: pointer; }
+
+    button:focus-visible,
+    input:focus-visible,
+    textarea:focus-visible {
+      outline: 3px solid #d9a56f;
+      outline-offset: 3px;
+    }
+
+    .petals, .fireworks-layer {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .petals { z-index: 1; }
+    .fireworks-layer { z-index: 15; }
+
+    .stars {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .stars::before, .stars::after {
+      content: "✦     ·     ✧        ✦       ·      ✧";
+      position: absolute;
+      width: 100%;
+      text-align: center;
+      letter-spacing: 5vw;
+      color: #ffdfd7;
+      opacity: .45;
+      animation: twinkle 4s ease-in-out infinite alternate;
+    }
+
+    .stars::before { top: 13%; }
+    .stars::after {
+      bottom: 13%;
+      animation-delay: -2s;
+    }
+
+    .petal {
+      position: absolute;
+      top: -27px;
+      width: 13px;
+      height: 19px;
+      border-radius: 85% 0 80% 20%;
+      background: linear-gradient(135deg, #ffe3e8, #e990af);
+      animation: fall linear forwards;
+    }
+
+    .confetti {
+      position: absolute;
+      left: 50%;
+      top: 45%;
+      width: 8px;
+      height: 14px;
+      border-radius: 3px;
+      animation: explode 1.55s cubic-bezier(.18,.65,.36,1) forwards;
+    }
+
+    .viewer {
+      min-height: 100vh;
+      min-height: 100dvh;
+      padding: 32px 15px;
+      display: grid;
+      place-items: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .stage {
+      width: min(100%, 530px);
+      animation: appear .55s ease both;
+    }
+
+    .panel {
+      position: relative;
+      text-align: center;
+      overflow: hidden;
+      padding: 38px 32px;
+      border: 1px solid #fff7f4;
+      border-radius: 28px;
+      background: linear-gradient(
+        150deg,
+        #fffbf7,
+        #fff2ed 72%,
+        #fce6ed
+      );
+      box-shadow: 0 24px 80px #1b0b1f96;
+    }
+
+    .panel::before {
+      content: "";
+      position: absolute;
+      inset: 11px;
+      border: 1px solid #c99f9f66;
+      border-radius: 21px;
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      font: 700 11px/1.7 var(--sans);
+      letter-spacing: .17em;
+      text-transform: uppercase;
+      color: #a77488;
+    }
+
+    .date {
+      margin: 12px 0 3px;
+      color: var(--rose);
+      font: 500 clamp(65px, 16vw, 89px)/1.1 var(--serif);
+      letter-spacing: -.065em;
+    }
+
+    .date span {
+      color: #d5a1b4;
+      font-size: .45em;
+      vertical-align: 15px;
+    }
+
+    .heading {
+      margin: 10px 0 0;
+      color: #87445f;
+      font: 500 clamp(25px, 5vw, 31px)/1.45 var(--serif);
+    }
+
+    .heading em { color: #b35a78; }
+
+    .small-copy {
+      max-width: 370px;
+      margin: 14px auto 23px;
+      color: #947185;
+      font: 13px/1.85 var(--sans);
+    }
+
+    .hint {
+      margin: 15px 0 0;
+      color: #aa8797;
+      font: 12px/1.8 var(--sans);
+    }
+
+    .btn {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 9px;
+      padding: 14px 22px;
+      border: 0;
+      border-radius: 99px;
+      color: #fff;
+      background: linear-gradient(120deg, #8d4165, #c46787);
+      box-shadow: 0 9px 18px #a5527860;
+      font: 700 13px/1.5 var(--sans);
+      transition: transform .2s, box-shadow .2s;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 22px #a5527870;
+    }
+
+    .btn:disabled {
+      opacity: .55;
+      cursor: default;
+    }
+
+    .btn-soft {
+      background: #f8e5e9;
+      color: #85455f;
+      box-shadow: none;
+    }
+
+    /* ========== PHONG BÌ ========== */
+
+    .envelope {
+      position: relative;
+      width: 245px;
+      height: 169px;
+      margin: 36px auto 32px;
+      filter: drop-shadow(0 13px 13px #7f48624c);
+      transform: rotate(-4deg);
+      transition: transform .7s ease;
+    }
+
+    .env-back {
+      position: absolute;
+      inset: 0;
+      background: #df96a5;
+      border-radius: 8px;
+    }
+
+    .env-letter {
+      position: absolute;
+      top: 18px;
+      left: 20px;
+      width: 205px;
+      height: 130px;
+      display: grid;
+      place-items: center;
+      border-radius: 5px;
+      background: #fffaf6;
+      color: #b95979;
+      font-size: 48px;
+      transition: transform .8s;
+    }
+
+    .env-front {
+      position: absolute;
+      inset: 0;
+      border-radius: 8px;
+      background: linear-gradient(130deg, #fbd1ca, #eba7b5);
+      clip-path: polygon(
+        0 0, 50% 55%, 100% 0, 100% 100%, 0 100%
+      );
+    }
+
+    .env-flap {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(160deg, #ffded1, #e8a0b4);
+      clip-path: polygon(0 0, 100% 0, 50% 58%);
+      transform-origin: top;
+      transition: transform .8s;
+    }
+
+    .seal {
+      position: absolute;
+      left: 50%;
+      top: 55%;
+      width: 43px;
+      height: 43px;
+      display: grid;
+      place-items: center;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      border: 3px solid #ffe9dd;
+      background: #a84c72;
+      color: #fff;
+      font-size: 24px;
+      transition: opacity .3s;
+    }
+
+    .envelope.open { transform: rotate(0); }
+
+    .envelope.open .env-flap {
+      transform: rotateX(180deg);
+      z-index: -1;
+    }
+
+    .envelope.open .env-letter {
+      transform: translateY(-78px);
+    }
+
+    .envelope.open .seal { opacity: 0; }
+
+    /* ========== LỰA CHỌN QUÀ ========== */
+
+    .gift-choices {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 11px;
+      margin: 26px 0 18px;
+    }
+
+    .choice {
+      min-width: 0;
+      padding: 17px 7px;
+      border: 1px solid #efc7d5;
+      border-radius: 18px;
+      background: #fffcfb;
+      color: #845b70;
+      font: 600 12px/1.5 var(--sans);
+      transition: transform .2s, background .2s;
+    }
+
+    .choice:hover { transform: translateY(-4px); }
+
+    .choice .emoji {
+      display: block;
+      margin-bottom: 9px;
+      font-size: 42px;
+    }
+
+    .choice.selected {
+      background: #ffedf2;
+      border-color: #b75a7e;
+      transform: translateY(-3px);
+    }
+
+    .mini-wish {
+      min-height: 62px;
+      color: #a05d7b;
+      font: italic 16px/1.85 var(--serif);
+    }
+
+    /* ========== THIỆP CHÚC MỪNG ========== */
+
+    .bouquet {
+      display: block;
+      margin: 6px auto 0;
+      font-size: 77px;
+      animation: float 4s ease-in-out infinite;
+    }
+
+    .letter-title {
+      margin: 9px 0;
+      color: #a14c71;
+      font: 500 clamp(31px, 7vw, 43px)/1.4 var(--serif);
+    }
+
+    .letter-title em { color: #bd6487; }
+
+    .separator {
+      margin: 13px 0;
+      color: var(--gold);
+      letter-spacing: .5em;
+    }
+
+    .recipient {
+      margin: 15px 0;
+      color: #9f5476;
+      font: italic 19px/1.6 var(--serif);
+      overflow-wrap: anywhere;
+    }
+
+    .letter-message {
+      min-height: 125px;
+      max-width: 405px;
+      margin: auto;
+      white-space: pre-line;
+      overflow-wrap: anywhere;
+      color: #6d4258;
+      font: 15px/2 var(--serif);
+    }
+
+    .letter-message.typing::after {
+      content: "│";
+      color: #bf6989;
+      animation: blink .65s steps(2) infinite;
+    }
+
+    .signature {
+      color: #a75376;
+      font: italic 15px/1.9 var(--serif);
+      white-space: pre-line;
+      overflow-wrap: anywhere;
+      margin: 19px 0 23px;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    /* ========== HỘP QUÀ BÍ MẬT ========== */
+
+    .gift-scene {
+      position: relative;
+      width: 190px;
+      height: 150px;
+      margin: 21px auto 0;
+    }
+
+    .gift-body {
+      position: absolute;
+      left: 29px;
+      top: 54px;
+      width: 132px;
+      height: 90px;
+      border-radius: 7px 7px 13px 13px;
+      background: linear-gradient(115deg, #bb587c, #e69ab2);
+      box-shadow: 0 14px 19px #913e6452;
+    }
+
+    .gift-body::before {
+      content: "";
+      position: absolute;
+      left: 55px;
+      top: 0;
+      height: 100%;
+      width: 21px;
+      background: #f9d3a4;
+    }
+
+    .gift-lid {
+      position: absolute;
+      left: 18px;
+      top: 37px;
+      width: 154px;
+      height: 35px;
+      z-index: 2;
+      border-radius: 7px;
+      background: linear-gradient(115deg, #b64e76, #d97797);
+      box-shadow: 0 4px 6px #84466538;
+      transition: transform .9s ease;
+    }
+
+    .gift-lid::before {
+      content: "";
+      position: absolute;
+      left: 65px;
+      top: 0;
+      height: 100%;
+      width: 23px;
+      background: #fbd6a5;
+    }
+
+    .gift-heart {
+      position: absolute;
+      z-index: 3;
+      left: 72px;
+      top: 15px;
+      font-size: 42px;
+      opacity: 0;
+      transition:
+        transform 1s ease .25s,
+        opacity .4s ease .25s;
+    }
+
+    .gift-scene.opened .gift-lid {
+      transform: translateY(-52px) rotate(-13deg);
+    }
+
+    .gift-scene.opened .gift-heart {
+      opacity: 1;
+      transform: translateY(-57px) scale(1.3);
+    }
+
+    .secret {
+      margin-top: 10px;
+      padding: 17px 16px;
+      border-radius: 17px;
+      border: 1px dashed #dfaabc;
+      background: #fffafa;
+      color: #914e6c;
+      font: italic 17px/1.85 var(--serif);
+      overflow-wrap: anywhere;
+      animation: appear .65s ease both;
+    }
+
+    .footnote {
+      text-align: center;
+      margin: 16px 0 0;
+      color: #f1cbda;
+      font: 11px/1.7 var(--sans);
+    }
+
+    .toast {
+      position: fixed;
+      z-index: 40;
+      bottom: 22px;
+      left: 50%;
+      transform: translate(-50%, 15px);
+      opacity: 0;
+      padding: 12px 18px;
+      border-radius: 100px;
+      color: var(--wine);
+      background: #fffbf8;
+      box-shadow: 0 9px 29px #16091970;
+      text-align: center;
+      pointer-events: none;
+      max-width: 90vw;
+      font: 600 12px/1.6 var(--sans);
+      transition: opacity .25s, transform .25s;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    /* ========== TRANG TẠO QR ========== */
+
+    body.builder-mode { background: #fff1f5; }
+
+    .builder {
+      max-width: 1020px;
+      margin: 0 auto;
+      padding: 38px 16px 60px;
+    }
+
+    .builder h1 {
+      margin: 7px 0 12px;
+      color: #7f3c60;
+      font: 500 clamp(27px, 5vw, 38px)/1.5 var(--serif);
+    }
+
+    .builder-intro {
+      max-width: 730px;
+      color: #896e7e;
+      font: 13px/1.9 var(--sans);
+    }
+
+    .builder-grid {
+      display: grid;
+      grid-template-columns: 1fr minmax(280px, 375px);
+      gap: 18px;
+      align-items: start;
+      margin-top: 23px;
+    }
+
+    .editor {
+      padding: 23px;
+      background: #fff;
+      border: 1px solid #ebcfdb;
+      border-radius: 21px;
+    }
+
+    .editor h2 {
+      margin: 0 0 18px;
+      color: #85415f;
+      font: 500 22px var(--serif);
+    }
+
+    .field-label {
+      display: block;
+      margin: 15px 0 8px;
+      color: #81586c;
+      font: 700 12px var(--sans);
+    }
+
+    .field {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #e7cbd6;
+      border-radius: 10px;
+      background: #fffbfd;
+      color: #65394f;
+      font: 13px/1.6 var(--sans);
+    }
+
+    textarea.field {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .helper {
+      color: #9d8291;
+      font: 11px/1.8 var(--sans);
+    }
+
+    .builder-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-top: 19px;
+    }
+
+    .builder-actions .btn { border-radius: 11px; }
+
+    .qr-box {
+      padding: 17px;
+      text-align: center;
+      border: 1px dashed #d6a9ba;
+      border-radius: 16px;
+      background: #fff8fb;
+    }
+
+    #qrTarget {
+      display: grid;
+      place-items: center;
+      min-height: 250px;
+      color: #a37e92;
+      font: 13px var(--sans);
+    }
+
+    #qrTarget img,
+    #qrTarget canvas {
+      max-width: 100% !important;
+      height: auto !important;
+      margin: auto;
+    }
+
+    #qrStatus {
+      color: #965474;
+      font: 12px/1.8 var(--sans);
+      min-height: 25px;
+    }
+
+    .steps {
+      padding-left: 20px;
+      color: #886e7d;
+      font: 12px/2 var(--sans);
+    }
+
+    /* ========== CHUYỂN ĐỘNG ========== */
+
+    @keyframes appear {
+      from {
+        opacity: 0;
+        transform: translateY(16px) scale(.97);
+      }
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    @keyframes float {
+      50% {
+        transform: translateY(-9px) rotate(3deg);
+      }
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+    @keyframes twinkle {
+      to {
+        opacity: .78;
+        transform: translateY(-8px);
+      }
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translate(0, -25px) rotate(0);
+        opacity: 0;
+      }
+      12% { opacity: .9; }
+      90% { opacity: .9; }
+      100% {
+        transform:
+          translate(var(--dx), 110vh)
+          rotate(var(--r));
+        opacity: 0;
+      }
+    }
+
+    @keyframes explode {
+      0% {
+        opacity: 1;
+        transform: translate(0, 0) rotate(0);
+      }
+      100% {
+        opacity: 0;
+        transform:
+          translate(var(--dx), var(--dy))
+          rotate(var(--r));
+      }
+    }
+
+    @media (max-width: 760px) {
+      .builder-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .panel { padding: 31px 18px; }
+
+      .envelope {
+        transform: scale(.9) rotate(-4deg);
+        margin: 19px auto 23px;
+      }
+
+      .choice { padding: 14px 4px; }
+      .choice .emoji { font-size: 34px; }
+      .letter-message { font-size: 14px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+      }
+
+      .petals, .fireworks-layer {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- CÁC LỚP HIỆU ỨNG -->
+
+  <div class="stars" aria-hidden="true"></div>
+  <div id="petals" class="petals" aria-hidden="true"></div>
+  <div id="fireworks" class="fireworks-layer" aria-hidden="true"></div>
+
+  <!-- =====================================
+       GIAO DIỆN NGƯỜI NHẬN THIỆP
+  ====================================== -->
+
+  <main id="viewer" class="viewer">
+    <div>
+
+      <!-- MÀN 1: PHONG BÌ -->
+
+      <section id="step1" class="stage">
+        <div class="panel">
+
+          <div class="eyebrow">
+            Ngày Phụ nữ Việt Nam · 2026
+          </div>
+
+          <h1 class="date">
+            20<span>·</span>10
+          </h1>
+
+          <p class="small-copy">
+            Có một điều dịu dàng đang chờ bạn khám phá...
+          </p>
+
+          <div id="envelope" class="envelope" aria-hidden="true">
+            <div class="env-back"></div>
+            <div class="env-letter">♡</div>
+            <div class="env-front"></div>
+            <div class="env-flap"></div>
+            <div class="seal">♥</div>
+          </div>
+
+          <h2 class="heading">
+            Một lá thư <em>dành riêng cho bạn!</em>
+          </h2>
+
+          <p class="small-copy">
+            Chạm vào phong bì để bắt đầu hành trình nhận quà nhé.
+          </p>
+
+          <button id="openBtn" class="btn" type="button">
+            💌 Mở lá thư
+          </button>
+
+          <p class="hint">
+            ♫ Nhạc sẽ tự phát khi bạn chạm mở thư.
+          </p>
+
+        </div>
+      </section>
+
+      <!-- MÀN 2: CHỌN QUÀ -->
+
+      <section id="step2" class="stage" hidden>
+        <div class="panel">
+
+          <div class="eyebrow">
+            Một trò chơi nhỏ dành cho bạn
+          </div>
+
+          <div class="bouquet">🎀</div>
+
+          <h2 class="heading">
+            Bạn sẽ chọn <em>món quà nào?</em>
+          </h2>
+
+          <p class="small-copy">
+            Mỗi món quà chứa một điều may mắn.
+            Hãy thử chọn nhé!
+          </p>
+
+          <div class="gift-choices">
+
+            <button class="choice" data-choice="0" type="button">
+              <span class="emoji">🌷</span>
+              Đóa hoa
+            </button>
+
+            <button class="choice" data-choice="1" type="button">
+              <span class="emoji">⭐</span>
+              Ngôi sao
+            </button>
+
+            <button class="choice" data-choice="2" type="button">
+              <span class="emoji">💖</span>
+              Trái tim
+            </button>
+
+          </div>
+
+          <p id="miniWish" class="mini-wish" aria-live="polite">
+            Chạm vào một món quà để khám phá ✨
+          </p>
+
+          <button id="continueBtn" class="btn" type="button" hidden>
+            ✨ Nhận lời chúc của bạn
+          </button>
+
+        </div>
+      </section>
+
+      <!-- MÀN 3: LỜI CHÚC -->
+
+      <section id="step3" class="stage" hidden>
+        <div class="panel">
+
+          <div class="eyebrow">
+            Happy Vietnamese Women's Day
+          </div>
+
+          <span class="bouquet" role="img" aria-label="Bó hoa">
+            💐
+          </span>
+
+          <h2 class="letter-title">
+            Chúc mừng<br>
+            <em>20 tháng 10</em>
+          </h2>
+
+          <div class="separator" aria-hidden="true">
+            ✦ ♡ ✦
+          </div>
+
+          <h3 id="receiverText" class="recipient"></h3>
+
+          <p id="messageText" class="letter-message"></p>
+
+          <p id="senderText" class="signature"></p>
+
+          <div class="actions">
+
+            <button id="surpriseBtn" class="btn" type="button">
+              🎁 Mở hộp quà bí mật
+            </button>
+
+            <button id="restartBtn" class="btn btn-soft" type="button">
+              ↻ Xem lại
+            </button>
+
+          </div>
+
+          <!-- HỘP QUÀ VÀ LỜI NHẮN BÍ MẬT -->
+
+          <div id="giftReveal" hidden>
+
+            <div id="giftScene" class="gift-scene" aria-hidden="true">
+              <div class="gift-heart">💝</div>
+              <div class="gift-body"></div>
+              <div class="gift-lid"></div>
+            </div>
+
+            <div id="secretBox" class="secret" hidden></div>
+
+          </div>
+
+        </div>
+      </section>
+
+      <p class="footnote">
+        Một chút yêu thương cho một ngày thật đặc biệt ♡
+      </p>
+
+    </div>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <!-- =====================================
+       TRANG TẠO THIỆP VÀ QR
+       MỞ BẰNG ?tao=1
+  ====================================== -->
+
+  <main id="builder" class="builder" hidden>
+
+    <div class="eyebrow">
+      Thiệp 20/10 tương tác
+    </div>
+
+    <h1>Tạo lời chúc riêng & mã QR 💌</h1>
+
+    <p class="builder-intro">
+      Cá nhân hóa tên, người gửi, lời chúc và thông điệp bí mật.
+      Mỗi mã QR sẽ mở đến một tấm thiệp có hiệu ứng và âm thanh.
+    </p>
+
+    <div class="builder-grid">
+
+      <section class="editor">
+
+        <h2>Chỉnh nội dung thiệp</h2>
+
+        <label for="siteUrl" class="field-label">
+          Đường dẫn website công khai
+        </label>
+
+        <input
+          id="siteUrl"
+          class="field"
+          type="url"
+          placeholder="https://tenban.github.io/thiep-20-10/"
+        >
+
+        <p class="helper">
+          Xem thử trên máy tính không cần website.
+          Để QR quét được ở điện thoại khác, phải đăng web công khai.
+        </p>
+
+        <label for="inName" class="field-label">
+          Tên người nhận
+        </label>
+
+        <input
+          id="inName"
+          class="field"
+          maxlength="50"
+          placeholder="Ví dụ: Chị Lan, Mẹ, Cô giáo..."
+        >
+
+        <label for="inFrom" class="field-label">
+          Người gửi
+        </label>
+
+        <input
+          id="inFrom"
+          class="field"
+          maxlength="50"
+          placeholder="Ví dụ: Hồng Hà"
+        >
+
+        <label for="inMessage" class="field-label">
+          Lời chúc riêng
+        </label>
+
+        <textarea
+          id="inMessage"
+          class="field"
+          maxlength="240"
+          placeholder="Để trống để dùng lời chúc mặc định trong CONFIG."
+        ></textarea>
+
+        <label for="inSecret" class="field-label">
+          Lời nhắn bí mật khi mở hộp quà
+        </label>
+
+        <textarea
+          id="inSecret"
+          class="field"
+          maxlength="130"
+          placeholder="Để trống để dùng lời nhắn mặc định."
+        ></textarea>
+
+        <p class="helper">
+          Nếu muốn lời chúc dài, hãy sửa ngay trong CONFIG của code.
+          Lời chúc rất dài trong QR sẽ khiến mã khó quét.
+        </p>
+
+        <div class="builder-actions">
+
+          <button id="previewBtn" class="btn" type="button">
+            👀 Xem trước
+          </button>
+
+          <button id="makeQrBtn" class="btn" type="button">
+            ▦ Tạo mã QR
+          </button>
+
+        </div>
+
+      </section>
+
+      <section class="editor">
+
+        <h2>Mã QR của bạn</h2>
+
+        <div class="qr-box">
+
+          <div id="qrTarget">
+            🌷 Mã QR sẽ xuất hiện ở đây
+          </div>
+
+          <p id="qrStatus" role="status">
+            Đăng website trước để tạo QR dùng được trên điện thoại khác.
+          </p>
+
+        </div>
+
+        <div class="builder-actions">
+
+          <button
+            id="downloadQrBtn"
+            class="btn btn-soft"
+            type="button"
+            disabled
+          >
+            ↓ Tải QR PNG
+          </button>
+
+          <button
+            id="copyLinkBtn"
+            class="btn btn-soft"
+            type="button"
+            disabled
+          >
+            ⧉ Sao chép link
+          </button>
+
+        </div>
+
+        <ol class="steps">
+          <li>
+            Đăng <strong>index.html</strong> và các tệp nhạc
+            (nếu có) lên GitHub Pages.
+          </li>
+          <li>
+            Mở <strong>địa-chỉ-web/?tao=1</strong> để tạo thiệp.
+          </li>
+          <li>
+            Nhập thông tin → Tạo QR → Lưu ảnh và gửi đi.
+          </li>
+        </ol>
+
+      </section>
+
+    </div>
+  </main>
+
+  <script>
+
+    // ====================================================
+    // ✏️ PHẦN BẠN TỰ SỬA: LỜI CHÚC VÀ NHẠC
+    // ====================================================
+
+    const CONFIG = {
+
+      tenMacDinh: 'người con gái tuyệt vời',
+
+      nguoiGuiMacDinh: 'Một người luôn trân quý bạn',
+
+      // ===== LỜI CHÚC CHÍNH =====
+
+      loiChucMacDinh:
+        'Nhân ngày Phụ nữ Việt Nam 20/10, chúc bạn luôn rạng rỡ, ' +
+        'tự tin và thật nhiều niềm vui. Mong rằng mỗi ngày trôi qua ' +
+        'đều có một lý do để bạn mỉm cười, một điều tốt đẹp để ' +
+        'mong chờ và những người yêu thương luôn ở bên.\n\n' +
+        'Cảm ơn bạn vì đã làm cho thế giới này thêm dịu dàng và ấm áp. 🌷',
+
+      // ===== LỜI NHẮN KHI MỞ HỘP QUÀ =====
+
+      loiBiMatMacDinh:
+        'Món quà hôm nay có thể nhỏ thôi, nhưng lời chúc là thật: ' +
+        'mong bạn luôn được yêu thương, được lắng nghe và được là chính mình. 💖',
+
+      // ===== LỜI CHÚC TỪ BA MÓN QUÀ =====
+
+      quaMayMan: [
+
+        '🌷 Chúc bạn luôn rạng rỡ như những đóa hoa !',
+
+        '⭐ Một ngôi sao may mắn đang mang điều tốt lành đến với bạn!',
+
+        '💖 Chúc trái tim bạn luôn ngập tràn yêu thương và bình yên!'
+
+      ],
+
+      // =============================================
+      // 🎵 THAY NHẠC MP3 TẠI ĐÂY
+      //
+      // ĐỂ TRỐNG:
+      // Code tự tạo nhạc nền và âm thanh.
+      //
+      // MUỐN DÙNG MP3 RIÊNG:
+      // Đặt file cùng thư mục index.html.
+      // Sau đó ghi tên file vào đúng vị trí.
+      // =============================================
+
+      amThanh: {
+
+        nhacNen: 'nhacnen.mp3',
+
+        moThu: '',
+
+        chonQua: '',
+
+        phaoHoa: '',
+
+        moQua: ''
+
+      },
+
+      amLuongNhacNen: 0.32,
+
+      amLuongHieuUng: 0.55
+
+    };
+
+
+    // ====================================================
+    // XỬ LÝ CHUNG
+    // ====================================================
+
+    const $ = id => document.getElementById(id);
+
+    const params = new URLSearchParams(location.search);
+
+    const isBuilder = params.get('tao') === '1';
+
+    const reducedMotion = matchMedia(
+      '(prefers-reduced-motion: reduce)'
+    ).matches;
+
+    const safe = (value, max) =>
+      String(value ?? '').trim().slice(0, max);
+
+    const user = {
+
+      ten: safe(params.get('ten'), 50),
+
+      tu: safe(params.get('tu'), 50),
+
+      loichuc: safe(params.get('loichuc'), 240),
+
+      bimat: safe(params.get('bimat'), 130)
+
+    };
+
+    let typingTimer = null;
+    let toastTimer = null;
+
+    function toast(message) {
+
+      $('toast').textContent = message;
+      $('toast').classList.add('show');
+
+      clearTimeout(toastTimer);
+
+      toastTimer = setTimeout(() => {
+        $('toast').classList.remove('show');
+      }, 2600);
+
+    }
+
+    function step(id) {
+
+      ['step1', 'step2', 'step3'].forEach(s => {
+        $(s).hidden = s !== id;
+      });
+
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+
+    }
+
+
+    // ====================================================
+    // 🎵 NHẠC NỀN
+    // TỰ PHÁT TỪ LẦN CHẠM ĐẦU TIÊN
+    // KHÔNG CẦN NÚT BẬT / TẮT
+    // ====================================================
+
+    let audioContext = null;
+    let bgStarted = false;
+    let synthStarted = false;
+    let bgPlayer = null;
+    let bgInterval = null;
+    let bgIndex = 0;
+
+    function context() {
+
+      const AudioContextType =
+        window.AudioContext ||
+        window.webkitAudioContext;
+
+      if (!AudioContextType) return null;
+
+      if (!audioContext) {
+        audioContext = new AudioContextType();
+      }
+
+      if (audioContext.state === 'suspended') {
+        audioContext.resume().catch(() => {});
+      }
+
+      return audioContext;
+
+    }
+
+
+    // =============================================
+    // TẠO NỐT NHẠC BẰNG WEB AUDIO API
+    // =============================================
+
+    function tone(
+      frequency,
+      delay = 0,
+      duration = .4,
+      volume = .035,
+      type = 'sine'
+    ) {
+
+      const ctx = context();
+
+      if (!ctx) return;
+
+      const start = ctx.currentTime + Math.max(0, delay);
+
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = type;
+
+      osc.frequency.setValueAtTime(
+        frequency,
+        start
+      );
+
+      gain.gain.setValueAtTime(.0001, start);
+
+      gain.gain.exponentialRampToValueAtTime(
+        Math.max(.0002, volume),
+        start + .035
+      );
+
+      gain.gain.exponentialRampToValueAtTime(
+        .0001,
+        start + duration
+      );
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(start);
+      osc.stop(start + duration + .03);
+
+    }
+
+
+    // =============================================
+    // NHẠC NỀN TÍCH HỢP
+    // PHÁT KHI KHÔNG CÓ MP3
+    // =============================================
+
+    function startSynthBackground() {
+
+      if (synthStarted) return;
+
+      synthStarted = true;
+
+      const melody = [
+
+        523.25, 659.25, 783.99, 659.25,
+
+        587.33, 698.46, 880.00, 698.46,
+
+        523.25, 659.25, 783.99, 987.77,
+
+        880.00, 783.99, 659.25, 587.33
+
+      ];
+
+      const tick = () => {
+
+        const note = melody[
+          bgIndex % melody.length
+        ];
+
+        tone(
+          note,
+          0,
+          1.05,
+          .022,
+          'sine'
+        );
+
+        if (bgIndex % 2 === 0) {
+
+          tone(
+            note / 2,
+            .05,
+            1.3,
+            .012,
+            'triangle'
+          );
+
+        }
+
+        bgIndex++;
+
+      };
+
+      tick();
+
+      bgInterval = setInterval(tick, 690);
+
+    }
+
+
+    // =============================================
+    // BẮT ĐẦU NHẠC NỀN
+    // =============================================
+
+    function beginBackgroundMusic() {
+
+      if (isBuilder) return;
+
+      context();
+
+      if (bgStarted) return;
+
+      bgStarted = true;
+
+      const file = CONFIG.amThanh.nhacNen.trim();
+
+      if (!file) {
+
+        startSynthBackground();
+        return;
+
+      }
+
+      bgPlayer = new Audio(file);
+
+      bgPlayer.loop = true;
+
+      bgPlayer.preload = 'auto';
+
+      bgPlayer.volume = CONFIG.amLuongNhacNen;
+
+      bgPlayer.addEventListener(
+        'error',
+        startSynthBackground,
+        { once: true }
+      );
+
+      bgPlayer.play().catch(startSynthBackground);
+
+    }
+
+
+    // ====================================================
+    // 🔔 CÁC ÂM THANH HIỆU ỨNG RIÊNG
+    // ====================================================
+
+    function synthEffect(name) {
+
+      // TIẾNG MỞ PHONG BÌ
+
+      if (name === 'moThu') {
+
+        tone(523.25, 0, .27, .065);
+
+        tone(659.25, .13, .32, .055);
+
+        tone(783.99, .27, .57, .052);
+
+      }
+
+      // TIẾNG CHỌN QUÀ
+
+      else if (name === 'chonQua') {
+
+        tone(
+          659.25,
+          0,
+          .22,
+          .055,
+          'triangle'
+        );
+
+        tone(
+          987.77,
+          .12,
+          .37,
+          .05
+        );
+
+      }
+
+      // TIẾNG PHÁO HOA
+
+      else if (name === 'phaoHoa') {
+
+        tone(
+          320,
+          0,
+          .14,
+          .045,
+          'triangle'
+        );
+
+        tone(
+          770,
+          .09,
+          .19,
+          .055,
+          'sine'
+        );
+
+        tone(
+          1130,
+          .18,
+          .39,
+          .038,
+          'sine'
+        );
+
+      }
+
+      // NHẠC HIỆU KHI MỞ HỘP QUÀ
+
+      else if (name === 'moQua') {
+
+        tone(392, 0, .24, .055);
+
+        tone(523.25, .12, .25, .055);
+
+        tone(659.25, .24, .3, .055);
+
+        tone(783.99, .39, .3, .055);
+
+        tone(1046.50, .54, .85, .065);
+
+      }
+
+    }
+
+
+    // ====================================================
+    // ƯU TIÊN MP3 NẾU CÓ
+    // NẾU KHÔNG CÓ THÌ DÙNG ÂM THANH TÍCH HỢP
+    // ====================================================
+
+    function effect(name) {
+
+      context();
+
+      const file = (
+        CONFIG.amThanh[name] || ''
+      ).trim();
+
+      if (!file) {
+
+        synthEffect(name);
+        return;
+
+      }
+
+      try {
+
+        const sound = new Audio(file);
+
+        sound.volume =
+          CONFIG.amLuongHieuUng;
+
+        sound.play().catch(() => {
+
+          synthEffect(name);
+
+        });
+
+      } catch (_) {
+
+        synthEffect(name);
+
+      }
+
+    }
+
+
+    // ====================================================
+    // CHẠM LẦN ĐẦU → NHẠC TỰ BẮT ĐẦU
+    // ====================================================
+
+    if (!isBuilder) {
+
+      document.addEventListener(
+        'pointerdown',
+        beginBackgroundMusic,
+        { capture: true }
+      );
+
+      document.addEventListener(
+        'keydown',
+        beginBackgroundMusic,
+        { capture: true }
+      );
+
+      document.addEventListener(
+        'visibilitychange',
+        () => {
+
+          if (
+            !document.hidden &&
+            bgStarted &&
+            audioContext?.state === 'suspended'
+          ) {
+
+            audioContext.resume().catch(() => {});
+
+          }
+
+        }
+      );
+
+    }
+
+
+    // ====================================================
+    // 🌸 HIỆU ỨNG HOA RƠI
+    // ====================================================
+
+    function addPetal() {
+
+      if (
+        isBuilder ||
+        reducedMotion ||
+        document.hidden
+      ) return;
+
+      const layer = $('petals');
+
+      if (layer.childElementCount > 25) return;
+
+      const petal = document.createElement('i');
+
+      petal.className = 'petal';
+
+      petal.style.left =
+        (Math.random() * 100) + '%';
+
+      petal.style.animationDuration =
+        (7 + Math.random() * 6) + 's';
+
+      petal.style.setProperty(
+        '--dx',
+        (Math.random() * 200 - 100) + 'px'
+      );
+
+      petal.style.setProperty(
+        '--r',
+        (Math.random() * 900 - 450) + 'deg'
+      );
+
+      layer.appendChild(petal);
+
+      petal.addEventListener(
+        'animationend',
+        () => petal.remove(),
+        { once: true }
+      );
+
+    }
+
+
+    // ====================================================
+    // 🎆 HIỆU ỨNG PHÁO HOA + ÂM THANH
+    // ====================================================
+
+    function fireworks(
+      quantity = 55,
+      withSound = true
+    ) {
+
+      if (withSound) {
+
+        effect('phaoHoa');
+
+      }
+
+      if (reducedMotion) return;
+
+      const layer = $('fireworks');
+
+      const colors = [
+
+        '#ffd7e6',
+
+        '#ffd697',
+
+        '#f1a7c4',
+
+        '#ffffff',
+
+        '#cfb1f7'
+
+      ];
+
+      for (let i = 0; i < quantity; i++) {
+
+        const spark =
+          document.createElement('i');
+
+        spark.className = 'confetti';
+
+        spark.style.background =
+          colors[i % colors.length];
+
+        spark.style.setProperty(
+          '--dx',
+          (Math.random() * 680 - 340) + 'px'
+        );
+
+        spark.style.setProperty(
+          '--dy',
+          (Math.random() * 600 - 300) + 'px'
+        );
+
+        spark.style.setProperty(
+          '--r',
+          (Math.random() * 1000 - 500) + 'deg'
+        );
+
+        spark.style.animationDelay =
+          (Math.random() * .2) + 's';
+
+        layer.appendChild(spark);
+
+        spark.addEventListener(
+          'animationend',
+          () => spark.remove(),
+          { once: true }
+        );
+
+      }
+
+    }
+
+
+    // ====================================================
+    // ✨ LỜI CHÚC HIỆN TỪNG CHỮ
+    // ====================================================
+
+    function typeWish(message) {
+
+      clearInterval(typingTimer);
+
+      const target = $('messageText');
+
+      target.textContent = '';
+
+      const chars = Array.from(message);
+
+      if (reducedMotion) {
+
+        target.textContent = message;
+        return;
+
+      }
+
+      let count = 0;
+
+      target.classList.add('typing');
+
+      typingTimer = setInterval(() => {
+
+        count = Math.min(
+          count + 3,
+          chars.length
+        );
+
+        target.textContent =
+          chars.slice(0, count).join('');
+
+        if (count >= chars.length) {
+
+          clearInterval(typingTimer);
+
+          target.classList.remove('typing');
+
+        }
+
+      }, 30);
+
+    }
+
+
+    // ====================================================
+    // 📱 CHẾ ĐỘ TẠO MÃ QR
+    // ====================================================
+
+    if (isBuilder) {
+
+      document.body.classList.add(
+        'builder-mode'
+      );
+
+      $('viewer').hidden = true;
+
+      $('builder').hidden = false;
+
+      $('petals').hidden = true;
+
+      $('fireworks').hidden = true;
+
+      if (
+        location.protocol === 'http:' ||
+        location.protocol === 'https:'
+      ) {
+
+        $('siteUrl').value =
+          location.origin + location.pathname;
+
+      }
+
+
+      function makeLink(requirePublic) {
+
+        const raw =
+          $('siteUrl').value.trim() ||
+          (!requirePublic ? location.href : '');
+
+        let url;
+
+        try {
+
+          url = new URL(raw);
+
+        } catch (_) {
+
+          throw new Error(
+            'Hãy nhập đường dẫn website hợp lệ.'
+          );
+
+        }
+
+        if (
+          requirePublic &&
+          (
+            !/^https?:$/.test(url.protocol) ||
+            /^(localhost|127\.0\.0\.1)$/i.test(
+              url.hostname
+            )
+          )
+        ) {
+
+          throw new Error(
+            'Mã QR cần một link website công khai, ' +
+            'không phải 127.0.0.1.'
+          );
+
+        }
+
+        url.search = '';
+        url.hash = '';
+
+        const parts = [
+
+          [
+            'ten',
+            safe($('inName').value, 50)
+          ],
+
+          [
+            'tu',
+            safe($('inFrom').value, 50)
+          ],
+
+          [
+            'loichuc',
+            safe($('inMessage').value, 240)
+          ],
+
+          [
+            'bimat',
+            safe($('inSecret').value, 130)
+          ]
+
+        ];
+
+        parts.forEach(([key, value]) => {
+
+          if (value) {
+
+            url.searchParams.set(
+              key,
+              value
+            );
+
+          }
+
+        });
+
+        return url.href;
+
+      }
+
+
+      // =============================================
+      // XEM THỬ THIỆP
+      // =============================================
+
+      $('previewBtn').addEventListener(
+        'click',
+        () => {
+
+          try {
+
+            window.open(
+              makeLink(false),
+              '_blank',
+              'noopener'
+            );
+
+          } catch (e) {
+
+            $('qrStatus').textContent =
+              e.message;
+
+          }
+
+        }
+      );
+
+
+      // =============================================
+      // TẢI THƯ VIỆN QR
+      // =============================================
+
+      let qrLoader = null;
+      let lastLink = '';
+
+      function ensureQr() {
+
+        if (window.QRCode) {
+          return Promise.resolve();
+        }
+
+        if (qrLoader) {
+          return qrLoader;
+        }
+
+        qrLoader = new Promise(
+          (resolve, reject) => {
+
+            const script =
+              document.createElement('script');
+
+            script.src =
+              'https://cdnjs.cloudflare.com/ajax/libs/' +
+              'qrcodejs/1.0.0/qrcode.min.js';
+
+            script.onload = () => {
+
+              window.QRCode
+                ? resolve()
+                : reject(
+                    new Error(
+                      'Không khởi tạo được thư viện QR.'
+                    )
+                  );
+
+            };
+
+            script.onerror = () => {
+
+              reject(
+                new Error(
+                  'Không tải được thư viện QR. ' +
+                  'Kiểm tra mạng internet.'
+                )
+              );
+
+            };
+
+            document.head.appendChild(script);
+
+          }
+        );
+
+        return qrLoader;
+
+      }
+
+
+      // =============================================
+      // TẠO MÃ QR
+      // =============================================
+
+      $('makeQrBtn').addEventListener(
+        'click',
+        async () => {
+
+          let link;
+
+          try {
+
+            link = makeLink(true);
+
+          } catch (e) {
+
+            $('qrStatus').textContent =
+              e.message;
+
+            return;
+
+          }
+
+          $('makeQrBtn').disabled = true;
+
+          $('qrStatus').textContent =
+            'Đang tạo mã QR...';
+
+          try {
+
+            await ensureQr();
+
+            $('qrTarget').replaceChildren();
+
+            new QRCode(
+              $('qrTarget'),
+              {
+
+                text: link,
+
+                width: 300,
+
+                height: 300,
+
+                colorDark: '#5c2742',
+
+                colorLight: '#ffffff',
+
+                correctLevel:
+                  QRCode.CorrectLevel.M
+
+              }
+            );
+
+            lastLink = link;
+
+            $('downloadQrBtn').disabled = false;
+
+            $('copyLinkBtn').disabled = false;
+
+            $('qrStatus').textContent =
+              link.length > 500
+                ? '✓ Đã tạo QR. Link khá dài, ' +
+                  'bạn nên rút ngắn lời chúc để dễ quét.'
+                : '✓ Đã tạo QR! ' +
+                  'Có thể tải ảnh hoặc sao chép link.';
+
+          } catch (e) {
+
+            $('qrTarget').textContent =
+              'Chưa tạo được QR.';
+
+            $('qrStatus').textContent =
+              e.message ||
+              'Lỗi tạo QR, hãy rút ngắn lời chúc.';
+
+          } finally {
+
+            $('makeQrBtn').disabled = false;
+
+          }
+
+        }
+      );
+
+
+      // =============================================
+      // TẢI ẢNH QR
+      // =============================================
+
+      $('downloadQrBtn').addEventListener(
+        'click',
+        () => {
+
+          const canvas =
+            $('qrTarget').querySelector('canvas');
+
+          const img =
+            $('qrTarget').querySelector('img');
+
+          const src = canvas
+            ? canvas.toDataURL('image/png')
+            : img?.src;
+
+          if (!src) return;
+
+          const link =
+            document.createElement('a');
+
+          link.href = src;
+
+          link.download =
+            'thiep-20-10-ma-qr.png';
+
+          link.click();
+
+        }
+      );
+
+
+      // =============================================
+      // SAO CHÉP LINK
+      // =============================================
+
+      $('copyLinkBtn').addEventListener(
+        'click',
+        async () => {
+
+          if (!lastLink) return;
+
+          try {
+
+            await navigator.clipboard.writeText(
+              lastLink
+            );
+
+            $('qrStatus').textContent =
+              '✓ Đã sao chép đường dẫn!';
+
+          } catch (_) {
+
+            window.prompt(
+              'Sao chép đường dẫn này:',
+              lastLink
+            );
+
+          }
+
+        }
+      );
+
+    }
+
+
+    // ====================================================
+    // 💌 CHẾ ĐỘ NGƯỜI NHẬN THIỆP
+    // ====================================================
+
+    else {
+
+      // =============================================
+      // ĐIỀN TÊN, LỜI CHÚC, NGƯỜI GỬI
+      // =============================================
+
+      $('receiverText').textContent =
+        user.ten
+          ? 'Gửi ' + user.ten + ' thân mến,'
+          : 'Gửi ' + CONFIG.tenMacDinh + ',';
+
+      $('senderText').textContent =
+        'Thân thương,\n' +
+        (
+          user.tu ||
+          CONFIG.nguoiGuiMacDinh
+        );
+
+      $('secretBox').textContent =
+        user.bimat ||
+        CONFIG.loiBiMatMacDinh;
+
+
+      // =============================================
+      // 💌 SỰ KIỆN MỞ THƯ
+      // =============================================
+
+      let opening = false;
+
+      $('openBtn').addEventListener(
+        'click',
+        () => {
+
+          if (opening) return;
+
+          beginBackgroundMusic();
+
+          effect('moThu');
+
+          opening = true;
+
+          $('openBtn').disabled = true;
+
+          $('envelope').classList.add('open');
+
+          setTimeout(() => {
+
+            step('step2');
+
+            opening = false;
+
+          }, reducedMotion ? 50 : 820);
+
+        }
+      );
+
+
+      // =============================================
+      // 🎀 CHỌN MÓN QUÀ
+      // =============================================
+
+      document.querySelectorAll(
+        '.choice'
+      ).forEach(button => {
+
+        button.addEventListener(
+          'click',
+          () => {
+
+            beginBackgroundMusic();
+
+            document.querySelectorAll(
+              '.choice'
+            ).forEach(b => {
+
+              b.classList.remove('selected');
+
+            });
+
+            button.classList.add(
+              'selected'
+            );
+
+            $('miniWish').textContent =
+              CONFIG.quaMayMan[
+                Number(button.dataset.choice)
+              ];
+
+            $('continueBtn').hidden = false;
+
+            // PHÁT ÂM THANH CHỌN QUÀ
+
+            effect('chonQua');
+
+            // PHÁO HOA CÓ ÂM THANH
+
+            setTimeout(() => {
+
+              fireworks(28, true);
+
+            }, 150);
+
+          }
+        );
+
+      });
+
+
+      // =============================================
+      // 💐 HIỂN THỊ LỜI CHÚC
+      // =============================================
+
+      $('continueBtn').addEventListener(
+        'click',
+        () => {
+
+          beginBackgroundMusic();
+
+          step('step3');
+
+          $('giftReveal').hidden = true;
+
+          $('giftScene').classList.remove(
+            'opened'
+          );
+
+          $('secretBox').hidden = true;
+
+          $('surpriseBtn').disabled = false;
+
+          typeWish(
+            user.loichuc ||
+            CONFIG.loiChucMacDinh
+          );
+
+          // PHÁO HOA CHÚC MỪNG
+
+          fireworks(70, true);
+
+        }
+      );
+
+
+      // =============================================
+      // 🎁 MỞ HỘP QUÀ BÍ MẬT
+      // =============================================
+
+      $('surpriseBtn').addEventListener(
+        'click',
+        () => {
+
+          beginBackgroundMusic();
+
+          // NHẠC HIỆU MỞ HỘP QUÀ
+
+          effect('moQua');
+
+          $('surpriseBtn').disabled = true;
+
+          $('giftReveal').hidden = false;
+
+          // NẮP HỘP QUÀ BẬT LÊN
+
+          requestAnimationFrame(() => {
+
+            $('giftScene').classList.add(
+              'opened'
+            );
+
+          });
+
+          // PHÁO HOA LẦN 1
+
+          fireworks(95, true);
+
+          setTimeout(() => {
+
+            // HIỆN LỜI NHẮN BÍ MẬT
+
+            $('secretBox').hidden = false;
+
+            $('secretBox').scrollIntoView({
+
+              behavior: 'smooth',
+
+              block: 'nearest'
+
+            });
+
+            // PHÁO HOA LẦN 2
+
+            fireworks(45, false);
+
+          }, reducedMotion ? 50 : 800);
+
+        }
+      );
+
+
+      // =============================================
+      // ↻ XEM LẠI THIỆP
+      // =============================================
+
+      $('restartBtn').addEventListener(
+        'click',
+        () => {
+
+          clearInterval(typingTimer);
+
+          $('messageText').classList.remove(
+            'typing'
+          );
+
+          $('envelope').classList.remove(
+            'open'
+          );
+
+          $('openBtn').disabled = false;
+
+          $('continueBtn').hidden = true;
+
+          $('miniWish').textContent =
+            'Chạm vào một món quà để khám phá ✨';
+
+          document.querySelectorAll(
+            '.choice'
+          ).forEach(b => {
+
+            b.classList.remove(
+              'selected'
+            );
+
+          });
+
+          step('step1');
+
+          // NHẠC NỀN VẪN TIẾP TỤC PHÁT
+          // KHÔNG RESET NHẠC
+
+        }
+      );
+
+
+      // =============================================
+      // 🌸 KÍCH HOẠT HOA RƠI
+      // =============================================
+
+      for (let i = 0; i < 7; i++) {
+
+        setTimeout(
+          addPetal,
+          i * 280
+        );
+
+      }
+
+      setInterval(
+        addPetal,
+        650
+      );
+
+    }
+
+  </script>
+</body>
+</html>
